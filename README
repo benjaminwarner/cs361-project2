@@ -1,0 +1,91 @@
+# Project 2: Nondeterministic Finite Automata
+
+* Author: Benjamin Warner
+* Class: CS361 Section 002
+* Semester: Fall 2021
+
+## Overview
+
+This program models a Nondeterministic Finite Automata (NFA).
+
+A command line simulator is provided through NFADriver.java.
+This simulator takes a single argument: a plain-text file that provides
+the formal definition of a NFA (the 5-tuple) and some strings that
+are used to determine if the NFA modeled accepts the strings.
+
+## Compiling and Running
+
+To build the driver, run the below command:
+
+`javac fa/nfa/NFADriver.java`
+
+To run the compiled driver, use the below command format:
+
+`java fa/nfa/NFADriver path/to/input/file.txt`
+
+An input file should consist of the 5-tuple that defines a NFA; this includes:
+
+* the set of final states F
+* the start state, q0
+* the set of all regular states (non-final and non-start)
+* the set of transitions (which will also provide the alphabet)
+
+It should be noted that state names are always a single character. Additionally,
+the letter 'e' is used to define the empty string (epsilon).
+
+The first line of the input file defines the final states; each final state is separated
+by white space. This line can be empty if there are no final states.
+
+The next line defines the name of the start state.
+
+The third line defines the remaining states of the machine. This line
+will not include F or q0 (i.e. any states from the previous two lines). Like
+the final states line, each state is separated by white space. This line
+may also be empty.
+
+The fourth line defines the transitions from state to state. Each transition is 
+separated by white space. A transition consists of three characters: s1, s2, s3.
+
+* s1 is the name of the from state
+* s2 is the symbol from the alphabet that defines the edge for the from state to the input state
+* s3 is the name of the to state
+
+Line five onwards define strings to determine if they're part of the DFA defined in the first four lines.
+Each line consists only of symbols from the machine's alphabet (i.e. strings over Sigma). Each line
+defines exactly one string.
+
+### Example Input File
+
+```
+b
+a
+a0a a1b b0a b1b
+0
+1
+00
+101
+e
+```
+
+## Discussion
+
+As far as difficulties go, this program was actually quite challenging, mostly because I procrastinated
+and waited until the last second to work on it. However, this program was only challenging because
+the task was not to necessarily model an NFA correctly, but to instead convert said NFA into a DFA. 
+That process can be rather complicated.
+
+Also, this is not at all how I would have designed this project if I had total control. First and foremost, I
+despise Java and would instead use Python.
+
+Modeling an NFA state in a separate class was actually useful here, since we had to keep track of all
+the transitions a state could go to (for e transitions as well). 
+
+Also, the method name `getABC` is not particularly good. While I understand it, I think a better name would
+be `getAlphabet`, since that is how Sigma is generally referred to in the context of finite automata.
+
+## Testing
+
+Sample input files were provided by my instructor (actually, the contents of the example input file provided
+in this README is one such input file). Three input files were provided, along with the expected output
+of running the program with them. Program correctness was verified by running this implementation
+on those input files and comparing output. No additional input files were constructed.
