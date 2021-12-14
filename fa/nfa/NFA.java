@@ -189,7 +189,7 @@ public class NFA implements NFAInterface {
 	 */
 	private String buildStateName(Set<NFAState> states) {
 		if (states.size() == 0)
-			return "";
+			return "[]";
 		NFAState[] statesArray = states.toArray(new NFAState[0]);
 		StringBuilder builder = new StringBuilder("[");
 		if (states.size() > 1) {
