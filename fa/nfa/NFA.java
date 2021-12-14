@@ -139,6 +139,7 @@ public class NFA implements NFAInterface {
 	 * Get the DFA representation of this NFA
 	 *
 	 * @return a DFA representation of this NFA
+	 */
 	public DFA getDFA() {
 		DFA dfa = new DFA();
 		Set<NFAState> states = new LinkedHashSet<NFAState>();
@@ -146,7 +147,7 @@ public class NFA implements NFAInterface {
 		states.addAll(this.eClosure(this.startState));
 		String startStateName = this.buildStateName(states);
 		dfa.addStartState(startStateName);
-		this.addStatesToDFA(states, dfa);
+		this.addStatesToDFA(states, dfa, startStateName);
 		return dfa;
 	}
 	
@@ -156,7 +157,7 @@ public class NFA implements NFAInterface {
 	 * @param states
 	 * @param dfa the dfa to modify
 	 */
-	private void addStatesToDFA(Set<NFAState> states, DFA dfa) {
+	private void addStatesToDFA(Set<NFAState> states, DFA dfa, String currentStateName) {
 		for (Character c : this.alphabet) {
 			Set<NFAState> allTransitions = new LinkedHashSet<NFAState>();
 			for (NFAState state : states) {
@@ -166,14 +167,17 @@ public class NFA implements NFAInterface {
 				allTransitions.addAll(transitions);
 			}
 			String stateName = buildStateName(allTransitions);
-			if (this.stateAlreadyExists(stateName, dfa))
+			if (this.stateAlreadyExists(stateName, dfa)) {
+				dfa.addTransition(currentStateName, c, stateName);
 				continue;
+			}
 			boolean isFinalState = findFinalState(allTransitions);
 			if (isFinalState)
 				dfa.addFinalState(stateName);
 			else
 				dfa.addState(stateName);
-			this.addStatesToDFA(allTransitions, dfa);
+			dfa.addTransition(currentStateName, c, stateName);
+			this.addStatesToDFA(allTransitions, dfa, stateName);
 		}
 	}
 	
